@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Video Game</title>
+
+    <style>
+      canvas {
+        image-rendering: optimizeSpeed;             /* Older versions of FF */
+        image-rendering: -moz-crisp-edges;          /* FF 6.0+ */
+        image-rendering: -webkit-optimize-contrast; /* Safari */
+        image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+        image-rendering: pixelated;                 /* Awesome future-browsers */
+        -ms-interpolation-mode: nearest-neighbor;   /* IE */
+      }
+
+      canvas#game-canvas {
+        background: #000;
+        /* scaling */
+        /*
+        width: 480px;
+        height: 320px;
+        */
+      }
+
+      .container {
+        text-align: center;
+        padding-top: 30px;
+        font-family: Helvetica, Arial, sans-serif;
+        line-height: 22px;
+      }
+    </style>
+
+    <script src="vendor.bundle.js"></script>
+    <script src="bundle.js"></script>
+
+  </head>
+
+  <body>
+    <div class="container">
+      <canvas id="game-canvas"></canvas>
+    </div>
+
+  </body>
+</html>
