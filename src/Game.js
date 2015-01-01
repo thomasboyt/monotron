@@ -1,8 +1,14 @@
 /* @flow */
 
 var Coquette = require('coquette');
-var Player = require('./entities/Player');
+var EnemySpawner = require('./EnemySpawner');
 var addRegister = require('./util/addRegister');
+var StateMachine = require('javascript-state-machine');
+
+var Player = require('./entities/Player');
+var Bullet = require('./entities/Bullet');
+var Enemy = require('./entities/Enemy');
+var UI = require('./entities/UI');
 
 type AssetMap = {
   images: {
@@ -18,6 +24,10 @@ class Game {
   assets: AssetMap;
   width: number;
   height: number;
+  score: number;
+
+  player: Player;
+  spawner: EnemySpawner;
 
   constructor(assets: AssetMap) {
     this.assets = assets;
@@ -29,10 +39,58 @@ class Game {
     this.c.renderer.getCtx().imageSmoothingEnabled = false;
     addRegister(this.c);
 
-    var player = new Player(this, {
-      center: { x:256, y:110 },
-      color: '#f07'
+    this.fsm = StateMachine.create({
+      // initial: 'loading',
+      initial: 'playing',
+      events: [
+        // { name: 'loaded', from: ['loading'], to: 'attract' },
+        // { name: 'start', from: ['attract', 'dead'], to: 'playing' },
+        { name: 'start', from: ['dead'], to: 'playing' },
+        { name: 'die', from: 'playing', to: 'dead' }
+      ],
+
+      callbacks: {
+        onenterplaying: this.start.bind(this),
+        onenterdead: this.die.bind(this)
+      }
     });
+
+    var ui = new UI(this, {});
+  }
+
+  update(dt: number) {
+    if (this.fsm.is("dead")) {
+      if (this.c.inputter.isPressed(this.c.inputter.R)) {
+       this.fsm.start(this.fsm);
+      }
+    }
+  }
+
+  start() {
+    this.score = 0;
+
+    this.player = new Player(this, {
+      center: { x: this.width / 2, y: this.height / 2 }
+    });
+
+    this.spawner = new EnemySpawner(this);
+    this.spawner.start();
+  }
+
+  clearWorld() {
+    var entities = [Player, Enemy, Bullet];
+
+    entities.forEach((type) => {
+      var items = this.c.entities.all(type);
+      items.forEach((item) => {
+        this.c.entities.destroy(item);
+      });
+    });
+  }
+
+  die() {
+    this.clearWorld();
+    this.spawner.stop();
   }
 }
 

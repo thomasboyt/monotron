@@ -12,7 +12,6 @@ function init() {
   });
 
   preloader.load().done(function(assets) {
-    // TODO: Use a promises library that doesn't break error handling in browser CJS
     setTimeout(function() {
       new Game(assets);
     }, 0);

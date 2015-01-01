@@ -15,13 +15,11 @@ type Coordinates = {
 
 type Options = {
   center: Coordinates;
-  color: string;
 };
 
 class Player extends Entity {
 
   c: Coquette;
-  color: string;
   game: Game;
   lastShot: number;
 
@@ -31,7 +29,6 @@ class Player extends Entity {
 
     this.size = { x:15, y:15 };
     this.center = settings.center;
-    this.color = settings.color;
 
     this.lastShot = 0;
   }
@@ -40,13 +37,11 @@ class Player extends Entity {
     var spd = PLAYER_SPEED/100 * dt;
 
     // Movement
-
     if (this.c.inputter.isDown(this.c.inputter.W)) {
       this.center.y -= spd;
     } else if (this.c.inputter.isDown(this.c.inputter.S)) {
       this.center.y += spd;
     }
-
     if (this.c.inputter.isDown(this.c.inputter.A)) {
       this.center.x -= spd;
     } else if (this.c.inputter.isDown(this.c.inputter.D)) {
@@ -82,7 +77,7 @@ class Player extends Entity {
   }
 
   draw(ctx: any) {
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = '#fff';
     ctx.fillRect(this.center.x - this.size.x / 2,
                  this.center.y - this.size.y / 2,
                  this.size.x,
@@ -92,7 +87,7 @@ class Player extends Entity {
   collision(other: Entity) {
     if (other instanceof Bullet) {
       if (other.creator !== this) {
-        console.log('done got shot');
+        this.game.fsm.die();
       }
     }
   }
