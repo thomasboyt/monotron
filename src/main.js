@@ -1,5 +1,7 @@
 /* @flow */
 
+require('../assets/game.css');
+
 var Coquette = require('coquette');
 
 var Game = require('./Game');

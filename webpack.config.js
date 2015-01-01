@@ -39,6 +39,16 @@ module.exports = {
         query: {
           name: '/assets/[hash].[ext]'
         }
+      },
+
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader'
+      },
+
+      {
+        test: /(?:\.woff$|\.ttf$|\.svg$|\.eot$)/,
+        loader: 'file-loader'
       }
     ]
   }

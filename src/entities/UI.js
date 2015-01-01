@@ -3,44 +3,66 @@
 var Game = require('../Game');
 var Entity = require('./Entity');
 
+var getFont = (fmt) => fmt + ' Hyperspace';
+
+var BLINK_TIMER_MS = 800;
+
 class UI extends Entity {
   game: Game;
+  lastBlink: number;
+  blinkOn: boolean;
 
   init(game: Game, settings: any) {
     this.game = game;
+    this.lastBlink = 0;
+    this.blinkOn = false;
+  }
+
+  update(dt: number) {
+    var now = Date.now();
+
+    if (now - this.lastBlink < BLINK_TIMER_MS) {
+      return;
+    }
+
+    this.blinkOn = !this.blinkOn;
+    this.lastBlink = now;
   }
 
   drawPlaying(ctx: any) {
     // Score
     ctx.textAlign = 'right';
-    ctx.font = 'bold 20px sans-serif';
+    ctx.font = getFont('normal 20px');
     ctx.fillText(this.game.score, this.game.width - 10, 20);
-
-    // Debug
-    // ctx.fillText(this.game.spawner.getSpawnDelay(), this.game.width - 10, this.game.height - 20);
   }
 
   drawDead(ctx: any) {
     ctx.textAlign = 'center';
 
-    ctx.font = 'bold 72px sans-serif';
+    ctx.font = getFont('normal 72px');
     ctx.fillStyle = '#fff';
-    ctx.fillText('GAME OVER', 250, 200);
+    ctx.fillText('Game Over', 250, 150);
 
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 32px sans-serif';
-    ctx.fillText('your final score: ' + this.game.score, 250, 300);
-    ctx.fillText('press R to restart', 250, 350);
+    ctx.font = getFont('normal 32px');
+    ctx.fillText('your final score:', 250, 220);
+    ctx.fillText(this.game.score, 250, 260);
+
+    if (this.blinkOn) {
+      ctx.fillText('press R to restart', 250, 310);
+    }
   }
 
   drawAttract(ctx: any) {
     ctx.textAlign = "center";
 
-    ctx.font = "bold 72px sans-serif";
-    ctx.fillText("monotron", 250, 250);
+    ctx.font = getFont('normal 64px');
+    ctx.fillText("Monotron", 250, 180);
 
-    ctx.font = "bold 42px sans-serif";
-    ctx.fillText("Press [space] to start", 250, 300);
+    if (this.blinkOn) {
+      ctx.font = getFont('normal 32px');
+      ctx.fillText("Press [space] to start", 250, 240);
+    }
   }
 
   draw(ctx: any) {

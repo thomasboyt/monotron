@@ -40,28 +40,34 @@ class Game {
     addRegister(this.c);
 
     this.fsm = StateMachine.create({
-      // initial: 'loading',
-      initial: 'playing',
+      initial: 'attract',
       events: [
         // { name: 'loaded', from: ['loading'], to: 'attract' },
-        // { name: 'start', from: ['attract', 'dead'], to: 'playing' },
-        { name: 'start', from: ['dead'], to: 'playing' },
+        { name: 'start', from: ['attract', 'dead'], to: 'playing' },
         { name: 'die', from: 'playing', to: 'dead' }
       ],
 
       callbacks: {
         onenterplaying: this.start.bind(this),
-        onenterdead: this.die.bind(this)
+        ondie: this.die.bind(this)
       }
     });
 
     var ui = new UI(this, {});
+
+    this.spawner = new EnemySpawner(this);
   }
 
   update(dt: number) {
-    if (this.fsm.is("dead")) {
+    if (this.fsm.is('dead')) {
       if (this.c.inputter.isPressed(this.c.inputter.R)) {
-       this.fsm.start(this.fsm);
+        this.fsm.start(this.fsm);
+      }
+    }
+
+    if (this.fsm.is('attract')) {
+      if (this.c.inputter.isPressed(this.c.inputter.SPACE)) {
+        this.fsm.start(this.fsm);
       }
     }
   }
@@ -73,7 +79,6 @@ class Game {
       center: { x: this.width / 2, y: this.height / 2 }
     });
 
-    this.spawner = new EnemySpawner(this);
     this.spawner.start();
   }
 

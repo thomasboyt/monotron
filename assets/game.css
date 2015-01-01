@@ -1,0 +1,45 @@
+@font-face {
+  font-family: "Hyperspace";
+  src: url('Hyperspace.ttf')
+}
+
+body {
+  background: #000;
+  color: #ddd;
+}
+
+a, a:visited {
+  color: white;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+canvas {
+  border: 1px #fff solid;
+
+  image-rendering: optimizeSpeed;             /* Older versions of FF */
+  image-rendering: -moz-crisp-edges;          /* FF 6.0+ */
+  image-rendering: -webkit-optimize-contrast; /* Safari */
+  image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+  image-rendering: pixelated;                 /* Awesome future-browsers */
+  -ms-interpolation-mode: nearest-neighbor;   /* IE */
+}
+
+canvas#game-canvas {
+  background: #000;
+}
+
+.container {
+  text-align: center;
+  padding-top: 30px;
+  line-height: 22px;
+  font-family: "Helvetica", "Arial," "sans-serif";
+}
+
+h2 {
+  font-size: 18px;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}

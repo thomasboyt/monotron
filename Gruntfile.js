@@ -29,11 +29,11 @@ module.exports = function(grunt) {
         }
       },
 
-      assets: {
-        files: {
-          './': ['build/assets/**']
-        }
-      }
+      // assets: {
+      //   files: {
+      //     './': ['build/assets/**']
+      //   }
+      // }
     },
 
     copy: {
