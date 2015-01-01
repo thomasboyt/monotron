@@ -18,12 +18,14 @@ type Options = {
 class Bullet extends Entity {
 
   c: Coquette;
+  game: Game;
   creator: Entity;
   speed: number;
   velocity: Coordinates;
 
   init(game: Game, settings: Options) {
     this.c = game.c;
+    this.game = game;
 
     this.size = { x:3, y:3 };
 
@@ -64,6 +66,14 @@ class Bullet extends Entity {
   update(dt: number) {
     this.center.x += this.velocity.x/100 * dt;
     this.center.y += this.velocity.y/100 * dt;
+
+    // Detect if it goes off-screen
+    if (this.center.x - this.size.x / 2 < 0 ||
+        this.center.y - this.size.y / 2 < 0 ||
+        this.center.x + this.size.x / 2 > this.game.width ||
+        this.center.y + this.size.y / 2 > this.game.height) {
+      this.c.entities.destroy(this);
+    }
   }
 
   draw(ctx: any) {
