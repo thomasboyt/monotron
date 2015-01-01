@@ -61,7 +61,7 @@ class UI extends Entity {
 
     if (this.blinkOn) {
       ctx.font = getFont('normal 32px');
-      ctx.fillText("Press [space] to start", 250, 240);
+      ctx.fillText("Push Space", 250, 240);
     }
   }
 
