@@ -54,21 +54,7 @@ class Player extends Entity {
       this.center.x += spd;
     }
 
-    var hw = this.size.x / 2;
-    var hh = this.size.y / 2;
-
-    if (this.center.x + hw < 0) {
-      this.center.x = hw;
-    }
-    if (this.center.y + hh < 0) {
-      this.center.y = hh;
-    }
-    if (this.center.x - hw > this.game.width) {
-      this.center.x = this.game.width - hw;
-    }
-    if (this.center.y - hh > this.game.width) {
-      this.center.y = this.game.width - hh;
-    }
+    this.preventOffEdge();
 
     // Shooting
     if (this.c.inputter.isPressed(this.c.inputter.I)) {
@@ -85,6 +71,27 @@ class Player extends Entity {
     if (this.c.inputter.isPressed(this.c.inputter.SPACE)) {
       this.bomb();
     }
+  }
+
+  preventOffEdge() {
+    var hw = this.size.x / 2;
+    var hh = this.size.y / 2;
+
+    var buf = 10;
+
+    if (this.center.x - hw < buf) {
+      this.center.x = buf + hw;
+    }
+    if (this.center.y - hh < buf) {
+      this.center.y = buf + hh;
+    }
+    if (this.center.x + hw > this.game.width - buf) {
+      this.center.x = this.game.width - hw - buf;
+    }
+    if (this.center.y + hh > this.game.height - buf) {
+      this.center.y = this.game.height - hh - buf;
+    }
+
   }
 
   shoot(direction: string) {

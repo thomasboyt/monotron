@@ -17,6 +17,16 @@ function addPadding(src, dest) {
 
   var ctx = dest.getContext('2d');
   ctx.drawImage(src, buf, buf);
+  ctx.translate(0.5, 0.5);
+
+  // Add outline around canvas
+  var outlineWidth = 4;
+  var ohw = outlineWidth / 2;
+
+  ctx.strokeStyle = 'white';
+  ctx.lineWidth = outlineWidth;
+
+  ctx.strokeRect(buf - ohw, buf - ohw, src.width + ohw, src.height + ohw);
 
   return dest;
 }

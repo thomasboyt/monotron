@@ -76,34 +76,8 @@ class UI extends Entity {
     ctx.fillRect(0, 0, this.game.width, this.game.height);
   }
 
-  drawOutline(ctx: any) {
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 6;
-
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, this.game.height);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(this.game.width, 0);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(this.game.width, this.game.height);
-    ctx.lineTo(this.game.width, 0);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(this.game.width, this.game.height);
-    ctx.lineTo(0, this.game.height);
-    ctx.stroke();
-  }
-
   draw(ctx: any) {
     this.drawBg(ctx);
-    this.drawOutline(ctx);
 
     var fsm = this.game.fsm;
 
