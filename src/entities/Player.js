@@ -2,8 +2,11 @@
 
 var Coquette = require('coquette');
 var Game = require('../Game');
+
 var Entity = require('./Entity');
 var Bullet = require('./Bullet');
+var Enemy = require('./Enemy');
+var Explosion = require('./Explosion');
 
 var PLAYER_SPEED = 15;
 var THROTTLE_MS = 200;
@@ -74,6 +77,11 @@ class Player extends Entity {
     } else if (this.c.inputter.isPressed(this.c.inputter.L)) {
       this.shoot('right');
     }
+
+    // Bomb
+    if (this.c.inputter.isPressed(this.c.inputter.SPACE)) {
+      this.bomb();
+    }
   }
 
   shoot(direction: string) {
@@ -92,6 +100,15 @@ class Player extends Entity {
     });
   }
 
+  bomb() {
+    var enemies = this.c.entities.all(Enemy);
+    enemies.forEach((enemy) => {
+      enemy.destroy(true);
+    });
+
+    this.game.audioManager.play('player_explosion');
+  }
+
   draw(ctx: any) {
     ctx.fillStyle = '#fff';
     ctx.fillRect(this.center.x - this.size.x / 2,
@@ -105,6 +122,19 @@ class Player extends Entity {
       if (other.creator !== this) {
         this.game.fsm.die();
       }
+    } else if (other instanceof Enemy) {
+      other.destroy(false);
+
+      new Explosion(this.game, {
+        creator: this,
+        vanishMs: 1500
+      });
+
+      this.game.c.entities.destroy(this);
+
+      setTimeout(() => {
+        this.game.fsm.die();
+      }, 2000);
     }
   }
 }

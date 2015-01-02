@@ -72,7 +72,10 @@ class Game {
 
     if (this.fsm.is('attract')) {
       if (this.c.inputter.isPressed(this.c.inputter.SPACE)) {
-        this.fsm.start(this.fsm);
+        setTimeout(() => {
+          // Timeout prevents space from trigger twice & bomb being activated
+          this.fsm.start(this.fsm);
+        });
       }
     }
 

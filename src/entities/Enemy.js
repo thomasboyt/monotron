@@ -2,10 +2,9 @@
 
 var Coquette = require('coquette');
 var math = require('../util/math');
-
 var Game = require('../Game');
+
 var Entity = require('./Entity');
-var Player = require('./Player');
 var Bullet = require('./Bullet');
 var Explosion = require('./Explosion');
 
@@ -23,7 +22,7 @@ type Options = {
 class Enemy extends Entity {
 
   game: Game;
-  player: Player;
+  player: Entity;  // TODO: This isn't defined :|
 
   init(game: Game, settings: Options) {
     this.game = game;
@@ -57,38 +56,27 @@ class Enemy extends Entity {
     );
   }
 
+  destroy(mute?: boolean) {
+    if (!mute) {
+      this.game.audioManager.play('player_explosion');
+    }
+
+    new Explosion(this.game, {
+      creator: this,
+      vanishMs: 500
+    });
+
+    this.game.c.entities.destroy(this);
+
+    this.game.score += 1;
+  }
+
   collision(other: Entity) {
     if (other instanceof Bullet) {
       if (other.creator === this.player) {
-        this.game.audioManager.play('player_explosion');
-        new Explosion(this.game, {
-          creator: this,
-          vanishMs: 500
-        });
-
-        this.game.c.entities.destroy(this);
+        this.destroy();
         this.game.c.entities.destroy(other);
-
-        this.game.score += 1;
       }
-    } else if (other instanceof Player) {
-      this.game.audioManager.play('player_explosion');
-
-      new Explosion(this.game, {
-        creator: other,
-        vanishMs: 1500
-      });
-      new Explosion(this.game, {
-        creator: this,
-        vanishMs: 500
-      });
-
-      this.game.c.entities.destroy(this);
-      this.game.c.entities.destroy(other);
-
-      setTimeout(() => {
-        this.game.fsm.die();
-      }, 2000);
     }
   }
 }
