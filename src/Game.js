@@ -37,6 +37,7 @@ class Game {
 
     this.c = window.__coquette__ = new Coquette(this, 'game-canvas', this.width, this.height, 'black');
     this.c.renderer.getCtx().imageSmoothingEnabled = false;
+    this.c.renderer.initGlfx();
     addRegister(this.c);
 
     this.fsm = StateMachine.create({

@@ -15,7 +15,7 @@ class Entity {
   center: Coordinates;
   size: Coordinates;
   angle: number;
-  zIndex: number;
+  zindex: number;
 
   // TODO: Should be some kinda enum w/ Coquette.Collider.RECTANGLE | Coquette.Collider.CIRCLE
   // (at worst, this could be a number once an interface is declared for Coquette, since those

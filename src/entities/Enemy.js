@@ -48,16 +48,12 @@ class Enemy extends Entity {
   }
 
   draw(ctx: any) {
-    ctx.fillStyle = '#000';
     ctx.strokeStyle = '#fff';
 
-    var rectArgs = [
+    ctx.strokeRect(
       this.center.x - this.size.x / 2, this.center.y - this.size.y / 2,
       this.size.x, this.size.y
-    ];
-
-    ctx.fillRect.apply(ctx, rectArgs);
-    ctx.strokeRect.apply(ctx, rectArgs);
+    );
   }
 
   collision(other: Entity) {

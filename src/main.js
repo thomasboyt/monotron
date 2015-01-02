@@ -1,8 +1,12 @@
 /* @flow */
 
 require('../assets/game.css');
+require('script!./vendor/glfx.js');
 
 var Coquette = require('coquette');
+
+var installGlfxRenderer = require('./util/glfxRenderer');
+installGlfxRenderer();
 
 var Game = require('./Game');
 var AssetPreloader = require('./util/AssetPreloader');

@@ -3,7 +3,7 @@ var webpack = require('webpack');
 module.exports = {
   entry: {
     app: './src/main.js',
-    vendor: ['coquette', 'q', 'lodash', 'javascript-state-machine']
+    vendor: ['coquette', 'q', 'lodash', 'javascript-state-machine', './src/vendor/glfx']
   },
 
   output: {

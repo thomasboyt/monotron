@@ -16,6 +16,8 @@ class UI extends Entity {
     this.game = game;
     this.lastBlink = 0;
     this.blinkOn = false;
+
+    this.zindex = -1;
   }
 
   update(dt: number) {
@@ -32,8 +34,8 @@ class UI extends Entity {
   drawPlaying(ctx: any) {
     // Score
     ctx.textAlign = 'right';
-    ctx.font = getFont('normal 20px');
-    ctx.fillText(this.game.score, this.game.width - 10, 20);
+    ctx.font = getFont('normal 24px');
+    ctx.fillText(this.game.score, this.game.width - 50, 50);
   }
 
   drawDead(ctx: any) {
@@ -66,6 +68,9 @@ class UI extends Entity {
   }
 
   draw(ctx: any) {
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillRect(0, 0, this.game.width, this.game.height);
+
     var fsm = this.game.fsm;
 
     ctx.fillStyle = '#fff';
