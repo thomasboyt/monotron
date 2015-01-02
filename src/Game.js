@@ -8,6 +8,7 @@ var StateMachine = require('javascript-state-machine');
 
 var Player = require('./entities/Player');
 var Bullet = require('./entities/Bullet');
+var Powerup = require('./entities/Powerup');
 var Enemy = require('./entities/Enemy');
 var UI = require('./entities/UI');
 
@@ -95,7 +96,7 @@ class Game {
   }
 
   clearWorld() {
-    var entities = [Player, Enemy, Bullet];
+    var entities = [Player, Enemy, Bullet, Powerup];
 
     entities.forEach((type) => {
       var items = this.c.entities.all(type);

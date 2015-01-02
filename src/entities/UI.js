@@ -36,6 +36,10 @@ class UI extends Entity {
     ctx.textAlign = 'right';
     ctx.font = getFont('normal 24px');
     ctx.fillText(this.game.score, this.game.width - 50, 50);
+
+    // Bombs
+    ctx.textAlign = 'left';
+    ctx.fillText('Bombs ' + this.game.player.bombs, 50, 50);
   }
 
   drawDead(ctx: any) {

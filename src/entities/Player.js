@@ -7,6 +7,7 @@ var Entity = require('./Entity');
 var Bullet = require('./Bullet');
 var Enemy = require('./Enemy');
 var Explosion = require('./Explosion');
+var Powerup = require('./Powerup');
 
 var PLAYER_SPEED = 15;
 var THROTTLE_MS = 200;
@@ -25,6 +26,7 @@ class Player extends Entity {
   c: Coquette;
   game: Game;
   lastShot: number;
+  bombs: number;
 
   init(game: Game, settings: Options) {
     this.c = game.c;
@@ -34,6 +36,7 @@ class Player extends Entity {
     this.center = settings.center;
 
     this.lastShot = 0;
+    this.bombs = 2;
   }
 
   update(dt: number) {
@@ -101,6 +104,12 @@ class Player extends Entity {
   }
 
   bomb() {
+    if (this.bombs === 0) {
+      return;
+    }
+
+    this.bombs -= 1;
+
     var enemies = this.c.entities.all(Enemy);
     enemies.forEach((enemy) => {
       enemy.destroy(true);
@@ -122,6 +131,7 @@ class Player extends Entity {
       if (other.creator !== this) {
         this.game.fsm.die();
       }
+
     } else if (other instanceof Enemy) {
       other.destroy(false);
 
@@ -135,6 +145,13 @@ class Player extends Entity {
       setTimeout(() => {
         this.game.fsm.die();
       }, 2000);
+
+    } else if (other instanceof Powerup) {
+      if (other.type === 'bomb') {
+        this.bombs += 1;
+      }
+      this.game.c.entities.destroy(other);
+      //this.game.audioManager.play('got_powerup');
     }
   }
 }

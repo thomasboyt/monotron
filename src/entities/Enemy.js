@@ -6,6 +6,7 @@ var Game = require('../Game');
 
 var Entity = require('./Entity');
 var Bullet = require('./Bullet');
+var Powerup = require('./Powerup');
 var Explosion = require('./Explosion');
 
 var ENEMY_SPEED = 5;
@@ -18,6 +19,10 @@ type Coordinates = {
 type Options = {
   center: Coordinates;
 };
+
+var POWERUP_SPAWN_THROTTLE_MS = 12000;
+var POWERUP_PROBABILITY = 0.15;
+var lastPowerupTime = Date.now();
 
 class Enemy extends Entity {
 
@@ -69,6 +74,24 @@ class Enemy extends Entity {
     this.game.c.entities.destroy(this);
 
     this.game.score += 1;
+
+    this.maybeCreatePowerup();
+  }
+
+  maybeCreatePowerup() {
+    var now = Date.now();
+    if (now - lastPowerupTime < POWERUP_SPAWN_THROTTLE_MS) {
+      return;
+    }
+
+    if (Math.random() < POWERUP_PROBABILITY) {
+      lastPowerupTime = now;
+
+      new Powerup(this.game, {
+        type: 'bomb',
+        center: this.center
+      });
+    }
   }
 
   collision(other: Entity) {
