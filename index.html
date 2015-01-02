@@ -11,12 +11,14 @@
   <body>
     <div class="container">
 
+      <canvas id="game-canvas"></canvas>
+
       <!-- HACK: forces Hyperspace font to load before canvas is rendered -->
       <div style="font-family: Hyperspace;">&nbsp;</div>
 
-      <canvas id="game-canvas"></canvas>
-
       <div class="what">
+
+        <h2><a href="#" id="full-screen" onclick="fullScreen()">Full screen</a></h2>
 
         <h2>Instructions</h2>
         <p>

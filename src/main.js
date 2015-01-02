@@ -14,6 +14,8 @@ var Game = require('./Game');
 var AssetPreloader = require('./util/AssetPreloader');
 
 function init() {
+  require('./page');
+
   var audioContext = new AudioContext();
 
   var preloader = new AssetPreloader(assets, audioContext);

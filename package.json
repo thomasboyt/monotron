@@ -31,8 +31,9 @@
   },
   "dependencies": {
     "coquette": "git://github.com/thomasboyt/coquette.git#commonjs",
-    "q": "~1.1.0",
+    "javascript-state-machine": "~2.3.2",
     "lodash": "~2.4.1",
-    "javascript-state-machine": "~2.3.2"
+    "q": "~1.1.0",
+    "screenfull": "^1.2.1"
   }
 }
