@@ -60,8 +60,11 @@ class Enemy extends Entity {
   collision(other: Entity) {
     if (other instanceof Bullet) {
       if (other.creator === this.player) {
-        // this.game.audioManager.play('enemy_explosion');
-        new Explosion(this.game, this);
+        this.game.audioManager.play('player_explosion');
+        new Explosion(this.game, {
+          creator: this,
+          vanishMs: 500
+        });
 
         this.game.c.entities.destroy(this);
         this.game.c.entities.destroy(other);
@@ -70,7 +73,22 @@ class Enemy extends Entity {
       }
     } else if (other instanceof Player) {
       this.game.audioManager.play('player_explosion');
-      this.game.fsm.die();
+
+      new Explosion(this.game, {
+        creator: other,
+        vanishMs: 1500
+      });
+      new Explosion(this.game, {
+        creator: this,
+        vanishMs: 500
+      });
+
+      this.game.c.entities.destroy(this);
+      this.game.c.entities.destroy(other);
+
+      setTimeout(() => {
+        this.game.fsm.die();
+      }, 2000);
     }
   }
 }

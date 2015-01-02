@@ -7,11 +7,15 @@ var Entity = require('./Entity');
 var Game = require('../Game');
 var math = require('../util/math');
 
-var VANISH_MS = 500;
 var PARTICLE_SPEED_BASE = 15;
 
 class ExplosionParticle {
-  constructor(originalCenter, originalSize) {
+  constructor(explosion: Explosion) {
+    this.explosion = explosion;
+
+    var originalSize = explosion.size;
+    var originalCenter = explosion.center;
+
     var randX = math.randInt(0, originalSize.x / 2);
     var randY = math.randInt(0, originalSize.y / 2);
 
@@ -24,13 +28,9 @@ class ExplosionParticle {
     this.angle = -Math.atan2(this.center.y - originalCenter.y, this.center.x - originalCenter.x);
 
     this.speed = PARTICLE_SPEED_BASE + math.randInt(0, 10);
-
-    this.timeElapsed = 0;
   }
 
   move(dt: number) {
-    this.timeElapsed += dt;
-
     var spd = dt/100 * this.speed;
     var vec = math.calcVector(spd, this.angle);
     this.center.x += vec.x;
@@ -38,7 +38,7 @@ class ExplosionParticle {
   }
 
   draw(ctx) {
-    var alpha = (VANISH_MS - this.timeElapsed) / VANISH_MS;
+    var alpha = (this.explosion.vanishMs - this.explosion.timeElapsed) / this.explosion.vanishMs;
     ctx.fillStyle = 'rgba(255, 255, 255, ' + alpha + ')';
     ctx.fillRect(this.center.x, this.center.y, 1, 1);
   }
@@ -46,11 +46,13 @@ class ExplosionParticle {
 
 class Explosion extends Entity {
 
-  init(game: Game, creator: Entity) {
+  init(game: Game, settings: any) {
     this.game = game;
 
-    this.center = creator.center;
-    this.size = creator.size;
+    this.creator = settings.creator;
+    this.center = this.creator.center;
+    this.size = this.creator.size;
+    this.vanishMs = settings.vanishMs;
 
     this.timeElapsed = 0;
 
@@ -63,14 +65,14 @@ class Explosion extends Entity {
     this.particles = [];
 
     for (var i = 0; i < numParticles; i++) {
-      this.particles[i] = new ExplosionParticle(this.center, this.size);
+      this.particles[i] = new ExplosionParticle(this);
     }
   }
 
   update(dt: number) {
     this.timeElapsed += dt;
 
-    if (this.timeElapsed > VANISH_MS) {
+    if (this.timeElapsed > this.vanishMs) {
       this.game.c.entities.destroy(this);
       return;
     }
