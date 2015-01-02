@@ -12,14 +12,20 @@ var Game = require('./Game');
 var AssetPreloader = require('./util/AssetPreloader');
 
 function init() {
+  var audioContext = new AudioContext();
+
   var preloader = new AssetPreloader({
     images: null,
-    audio: null
-  });
+    audio: {
+      'enemy_explosion': require('file!../assets/sound/enemy_explosion.wav'),
+      'player_explosion': require('file!../assets/sound/player_explosion.wav'),
+      'shoot': require('file!../assets/sound/shoot.wav')
+    }
+  }, audioContext);
 
   preloader.load().done(function(assets) {
     setTimeout(function() {
-      new Game(assets);
+      new Game(assets, audioContext);
     }, 0);
   });
 }

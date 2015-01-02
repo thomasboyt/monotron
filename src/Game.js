@@ -2,6 +2,7 @@
 
 var Coquette = require('coquette');
 var EnemySpawner = require('./EnemySpawner');
+var AudioManager = require('./util/AudioManager');
 var addRegister = require('./util/addRegister');
 var StateMachine = require('javascript-state-machine');
 
@@ -22,15 +23,18 @@ type AssetMap = {
 class Game {
   c: Coquette;
   assets: AssetMap;
+  audioManager: AudioManager;
+
   width: number;
   height: number;
-  score: number;
 
   player: Player;
   spawner: EnemySpawner;
+  score: number;
 
-  constructor(assets: AssetMap) {
+  constructor(assets: AssetMap, audioCtx: any) {
     this.assets = assets;
+    this.audioManager = new AudioManager(audioCtx, this.assets.audio);
 
     this.width = 500;
     this.height = 375;
@@ -70,6 +74,10 @@ class Game {
       if (this.c.inputter.isPressed(this.c.inputter.SPACE)) {
         this.fsm.start(this.fsm);
       }
+    }
+
+    if (this.c.inputter.isPressed(this.c.inputter.M)) {
+      this.audioManager.toggleMute();
     }
   }
 

@@ -32,6 +32,8 @@ class Bullet extends Entity {
     this.speed = settings.speed;
     var creator = this.creator = settings.creator;
 
+    this.game.audioManager.play('shoot');
+
     // TODO: ew.
     if (settings.direction === 'left') {
       this.center = {
