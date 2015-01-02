@@ -15,9 +15,6 @@ class Powerup extends Entity {
     this.type = settings.type;
   }
 
-  update(dt: number) {
-  }
-
   draw(ctx: any) {
     ctx.strokeStyle = '#fff';
 

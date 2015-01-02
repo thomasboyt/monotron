@@ -2,10 +2,10 @@
 
 var Coquette = require('coquette');
 
-var Entity = require('./Entity');
+var Entity = require('../Entity');
 
-var Game = require('../Game');
-var math = require('../util/math');
+var Game = require('../../Game');
+var math = require('../../util/math');
 
 var PARTICLE_SPEED_BASE = 15;
 

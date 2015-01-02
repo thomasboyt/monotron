@@ -7,7 +7,7 @@ var Game = require('../Game');
 var Entity = require('./Entity');
 var Bullet = require('./Bullet');
 var Powerup = require('./Powerup');
-var Explosion = require('./Explosion');
+var Explosion = require('./effects/Explosion');
 
 type Coordinates = {
   x: number;
@@ -75,6 +75,17 @@ class Enemy extends Entity {
   }
 
   maybeCreatePowerup() {
+    // Ensure powerup will not spawn in a place the player cannot reach
+    var buf = this.game.config.edgeBuffer;
+    var hw = this.size.x / 2, hh = this.size.y / 2;
+
+    if (this.center.x - hw < buf ||
+        this.center.y - hh < buf ||
+        this.center.x + hw > this.game.width - buf ||
+        this.center.y + hh > this.game.height - buf) {
+      return;
+    }
+
     var now = Date.now();
     if (now - lastPowerupTime < this.game.config.powerupSpawnThrottleMs) {
       return;

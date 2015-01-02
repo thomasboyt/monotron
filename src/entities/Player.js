@@ -6,7 +6,8 @@ var Game = require('../Game');
 var Entity = require('./Entity');
 var Bullet = require('./Bullet');
 var Enemy = require('./Enemy');
-var Explosion = require('./Explosion');
+var Explosion = require('./effects/Explosion');
+var Shockwave = require('./effects/Shockwave');
 var Powerup = require('./Powerup');
 
 type Coordinates = {
@@ -33,7 +34,7 @@ class Player extends Entity {
     this.center = settings.center;
 
     this.lastShot = 0;
-    this.bombs = 0;
+    this.bombs = this.game.config.numBombs;
   }
 
   update(dt: number) {
@@ -74,7 +75,7 @@ class Player extends Entity {
     var hw = this.size.x / 2;
     var hh = this.size.y / 2;
 
-    var buf = 10;
+    var buf = this.game.config.edgeBuffer;
 
     if (this.center.x - hw < buf) {
       this.center.x = buf + hw;
@@ -114,12 +115,21 @@ class Player extends Entity {
 
     this.bombs -= 1;
 
-    var enemies = this.c.entities.all(Enemy);
-    enemies.forEach((enemy) => {
-      enemy.destroy(true);
-    });
+    var x = this.center.x;
+    var y = this.center.y;
 
-    this.game.audioManager.play('player_explosion');
+    this.game.audioManager.play('bomb');
+
+    var mkShockwave = () => {
+      new Shockwave(this.game, {
+        center: {x: x, y: y}
+      });
+    };
+
+    mkShockwave();
+    setTimeout(mkShockwave, 100);
+    setTimeout(mkShockwave, 200);
+    setTimeout(mkShockwave, 300);
   }
 
   draw(ctx: any) {
