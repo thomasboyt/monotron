@@ -9,8 +9,6 @@ var Bullet = require('./Bullet');
 var Powerup = require('./Powerup');
 var Explosion = require('./Explosion');
 
-var ENEMY_SPEED = 5;
-
 type Coordinates = {
   x: number;
   y: number;
@@ -20,8 +18,6 @@ type Options = {
   center: Coordinates;
 };
 
-var POWERUP_SPAWN_THROTTLE_MS = 12000;
-var POWERUP_PROBABILITY = 0.15;
 var lastPowerupTime = Date.now();
 
 class Enemy extends Entity {
@@ -40,7 +36,7 @@ class Enemy extends Entity {
   update(dt: number) {
     // Enemies attempt to get closer to the player
 
-    var spd = dt/100 * ENEMY_SPEED;
+    var spd = dt/100 * this.game.config.enemySpeed;
 
     // Calculate the angle between enemy and player
     var player = this.player;
@@ -80,11 +76,11 @@ class Enemy extends Entity {
 
   maybeCreatePowerup() {
     var now = Date.now();
-    if (now - lastPowerupTime < POWERUP_SPAWN_THROTTLE_MS) {
+    if (now - lastPowerupTime < this.game.config.powerupSpawnThrottleMs) {
       return;
     }
 
-    if (Math.random() < POWERUP_PROBABILITY) {
+    if (Math.random() < this.game.config.powerupProbability) {
       lastPowerupTime = now;
 
       new Powerup(this.game, {

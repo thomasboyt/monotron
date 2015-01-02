@@ -5,6 +5,7 @@ var EnemySpawner = require('./EnemySpawner');
 var AudioManager = require('./util/AudioManager');
 var addRegister = require('./util/addRegister');
 var StateMachine = require('javascript-state-machine');
+var config = require('./config');
 
 var Player = require('./entities/Player');
 var Bullet = require('./entities/Bullet');
@@ -39,6 +40,8 @@ class Game {
 
     this.width = 500;
     this.height = 375;
+
+    this.config = config;
 
     this.c = window.__coquette__ = new Coquette(this, 'game-canvas', this.width, this.height, 'black');
     this.c.renderer.getCtx().imageSmoothingEnabled = false;

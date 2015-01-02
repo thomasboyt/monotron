@@ -9,9 +9,6 @@ var Enemy = require('./Enemy');
 var Explosion = require('./Explosion');
 var Powerup = require('./Powerup');
 
-var PLAYER_SPEED = 15;
-var THROTTLE_MS = 200;
-
 type Coordinates = {
   x: number;
   y: number;
@@ -40,7 +37,7 @@ class Player extends Entity {
   }
 
   update(dt: number) {
-    var spd = PLAYER_SPEED/100 * dt;
+    var spd = this.game.config.playerSpeed/100 * dt;
 
     // Movement
     if (this.c.inputter.isDown(this.c.inputter.W)) {
@@ -97,7 +94,7 @@ class Player extends Entity {
   shoot(direction: string) {
     var now = Date.now();
 
-    if (now - this.lastShot < THROTTLE_MS) {
+    if (now - this.lastShot < this.game.config.fireThrottleMs) {
       return;
     }
 
@@ -106,7 +103,7 @@ class Player extends Entity {
     new Bullet(this.game, {
       direction: direction,
       creator: this,
-      speed: 35
+      speed: this.game.config.bulletSpeed
     });
   }
 
