@@ -7,6 +7,7 @@ var Game = require('../Game');
 var Entity = require('./Entity');
 var Player = require('./Player');
 var Bullet = require('./Bullet');
+var Explosion = require('./Explosion');
 
 var ENEMY_SPEED = 5;
 
@@ -60,6 +61,7 @@ class Enemy extends Entity {
     if (other instanceof Bullet) {
       if (other.creator === this.player) {
         // this.game.audioManager.play('enemy_explosion');
+        new Explosion(this.game, this);
 
         this.game.c.entities.destroy(this);
         this.game.c.entities.destroy(other);
