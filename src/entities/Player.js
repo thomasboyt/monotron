@@ -36,7 +36,7 @@ class Player extends Entity {
     this.center = settings.center;
 
     this.lastShot = 0;
-    this.bombs = 2;
+    this.bombs = 0;
   }
 
   update(dt: number) {
@@ -151,7 +151,7 @@ class Player extends Entity {
         this.bombs += 1;
       }
       this.game.c.entities.destroy(other);
-      //this.game.audioManager.play('got_powerup');
+      this.game.audioManager.play('powerup');
     }
   }
 }

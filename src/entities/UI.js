@@ -39,7 +39,7 @@ class UI extends Entity {
 
     // Bombs
     ctx.textAlign = 'left';
-    ctx.fillText('Bombs ' + this.game.player.bombs, 50, 50);
+    ctx.fillText('Bombs:' + this.game.player.bombs, 50, 50);
   }
 
   drawDead(ctx: any) {
