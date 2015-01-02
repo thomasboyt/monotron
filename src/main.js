@@ -17,9 +17,9 @@ function init() {
   var preloader = new AssetPreloader({
     images: null,
     audio: {
-      'enemy_explosion': require('file!../assets/sound/enemy_explosion.wav'),
-      'player_explosion': require('file!../assets/sound/player_explosion.wav'),
-      'shoot': require('file!../assets/sound/shoot.wav')
+      'enemy_explosion': require('../assets/sound/enemy_explosion.wav'),
+      'player_explosion': require('../assets/sound/player_explosion.wav'),
+      'shoot': require('../assets/sound/shoot.wav')
     }
   }, audioContext);
 

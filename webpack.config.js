@@ -48,7 +48,18 @@ module.exports = {
 
       {
         test: /(?:\.woff$|\.ttf$|\.svg$|\.eot$)/,
-        loader: 'file-loader'
+        loader: 'file-loader',
+        query: {
+          name: '/assets/[hash].[ext]'
+        }
+      },
+
+      {
+        test: /(?:\.wav$)/,
+        loader: 'file-loader',
+        query: {
+          name: '/assets/[hash].[ext]'
+        }
       }
     ]
   }
