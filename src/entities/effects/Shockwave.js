@@ -1,11 +1,9 @@
 /* @flow */
 
 var Coquette = require('coquette');
+var Game = require('../../Game');
 
 var Entity = require('../Entity');
-var Enemy = require('../Enemy');
-
-var Game = require('../../Game');
 
 var SHOCKWAVE_SPEED = 25;
 var MAX_RADIUS = 150;
@@ -60,12 +58,6 @@ class Shockwave extends Entity {
     ctx.closePath();
 
     ctx.stroke();
-  }
-
-  collision(other: Entity) {
-    if (other instanceof Enemy) {
-      other.destroy(true);
-    }
   }
 }
 

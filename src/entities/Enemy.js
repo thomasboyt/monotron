@@ -7,6 +7,7 @@ var Game = require('../Game');
 var Entity = require('./Entity');
 var Bullet = require('./Bullet');
 var Powerup = require('./Powerup');
+var Shockwave = require('./effects/Shockwave');
 var Explosion = require('./effects/Explosion');
 
 type Coordinates = {
@@ -107,6 +108,8 @@ class Enemy extends Entity {
         this.destroy();
         this.game.c.entities.destroy(other);
       }
+    } else if (other instanceof Shockwave) {
+      other.destroy(true);
     }
   }
 }
