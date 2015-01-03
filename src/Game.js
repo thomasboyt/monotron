@@ -79,7 +79,7 @@ class Game {
         setTimeout(() => {
           // Timeout prevents space from trigger twice & bomb being activated
           this.fsm.start(this.fsm);
-        });
+        }, 0);
       }
     }
 

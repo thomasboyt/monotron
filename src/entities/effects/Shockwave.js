@@ -11,6 +11,10 @@ var FADE_TIME_MS = 200;
 
 class Shockwave extends Entity {
 
+  game: Game;
+  radius: number;
+  fadeTimer: number;
+
   init(game: Game, settings: any) {
     this.game = game;
 

@@ -9,7 +9,18 @@ var math = require('../../util/math');
 
 var PARTICLE_SPEED_BASE = 15;
 
+type Coordinates = {
+  x: number;
+  y: number;
+}
+
 class ExplosionParticle {
+
+  explosion: Explosion;
+  center: Coordinates;
+  angle: number;
+  speed: number;
+
   constructor(explosion: Explosion) {
     this.explosion = explosion;
 
@@ -45,6 +56,12 @@ class ExplosionParticle {
 }
 
 class Explosion extends Entity {
+
+  game: Game;
+  creator: Entity;
+  vanishMs: number;
+  timeElapsed: number;
+  particles: Array<ExplosionParticle>;  // </>
 
   init(game: Game, settings: any) {
     this.game = game;
