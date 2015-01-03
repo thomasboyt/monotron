@@ -109,7 +109,7 @@ class Enemy extends Entity {
         this.game.c.entities.destroy(other);
       }
     } else if (other instanceof Shockwave) {
-      other.destroy(true);
+      this.destroy(true);
     }
   }
 }
