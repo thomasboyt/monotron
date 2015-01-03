@@ -2,6 +2,7 @@
 
 var Game = require('../Game');
 var Entity = require('./Entity');
+var Timer = require('../util/Timer');
 
 var getFont = (fmt) => fmt + ' Hyperspace';
 
@@ -9,26 +10,24 @@ var BLINK_TIMER_MS = 800;
 
 class UI extends Entity {
   game: Game;
-  lastBlink: number;
+  blinkTimer: Timer;
   blinkOn: boolean;
 
   init(game: Game, settings: any) {
     this.game = game;
-    this.lastBlink = 0;
-    this.blinkOn = false;
 
     this.zindex = -1;
+
+    this.blinkTimer = new Timer(BLINK_TIMER_MS);
+    this.blinkOn = true;
   }
 
   update(dt: number) {
-    var now = Date.now();
+    if (this.blinkTimer.expired()) {
+      this.blinkTimer.reset();
 
-    if (now - this.lastBlink < BLINK_TIMER_MS) {
-      return;
+      this.blinkOn = !this.blinkOn;
     }
-
-    this.blinkOn = !this.blinkOn;
-    this.lastBlink = now;
   }
 
   drawPlaying(ctx: any) {

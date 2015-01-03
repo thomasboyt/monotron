@@ -2,6 +2,7 @@
 
 var Coquette = require('coquette');
 var Game = require('../Game');
+var Timer = require('../util/Timer');
 
 var Entity = require('./Entity');
 var Bullet = require('./Bullet');
@@ -23,8 +24,8 @@ class Player extends Entity {
 
   c: Coquette;
   game: Game;
-  lastShot: number;
   bombs: number;
+  shotThrottleTimer: timer;
 
   init(game: Game, settings: Options) {
     this.c = game.c;
@@ -32,8 +33,8 @@ class Player extends Entity {
 
     this.size = { x:15, y:15 };
     this.center = settings.center;
+    this.shotThrottleTimer = new Timer(this.game.config.fireThrottleMs);
 
-    this.lastShot = 0;
     this.bombs = this.game.config.numBombs;
   }
 
@@ -93,19 +94,15 @@ class Player extends Entity {
   }
 
   shoot(direction: string) {
-    var now = Date.now();
+    if (this.shotThrottleTimer.expired()) {
+      this.shotThrottleTimer.reset();
 
-    if (now - this.lastShot < this.game.config.fireThrottleMs) {
-      return;
+      new Bullet(this.game, {
+        direction: direction,
+        creator: this,
+        speed: this.game.config.bulletSpeed
+      });
     }
-
-    this.lastShot = now;
-
-    new Bullet(this.game, {
-      direction: direction,
-      creator: this,
-      speed: this.game.config.bulletSpeed
-    });
   }
 
   bomb() {
