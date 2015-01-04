@@ -8,6 +8,15 @@ var getFont = (fmt) => fmt + ' Hyperspace';
 
 var BLINK_TIMER_MS = 800;
 
+// http://stackoverflow.com/a/2998822/1212864
+function pad(num, size) {
+  var s = num + "";
+  while (s.length < size) {
+    s = "0" + s;
+  }
+  return s;
+}
+
 class UI extends Entity {
   game: Game;
   blinkTimer: Timer;
@@ -34,7 +43,7 @@ class UI extends Entity {
     // Score
     ctx.textAlign = 'right';
     ctx.font = getFont('normal 24px');
-    ctx.fillText(this.game.score, this.game.width - 50, 50);
+    ctx.fillText(pad(this.game.session.score, 4), this.game.width - 50, 50);
 
     // Bombs
     ctx.textAlign = 'left';
@@ -42,19 +51,37 @@ class UI extends Entity {
   }
 
   drawDead(ctx: any) {
-    ctx.textAlign = 'center';
-
-    ctx.font = getFont('normal 72px');
     ctx.fillStyle = '#fff';
+
+    ctx.textAlign = 'center';
+    ctx.font = getFont('normal 72px');
     ctx.fillText('Game Over', 250, 150);
 
-    ctx.fillStyle = '#fff';
     ctx.font = getFont('normal 32px');
-    ctx.fillText('your final score:', 250, 220);
-    ctx.fillText(this.game.score, 250, 260);
 
+    var score = pad(this.game.session.score, 4);
+
+    ctx.textAlign = 'left';
+    ctx.fillText('score', 150, 220);
+    ctx.textAlign = 'right';
+    ctx.fillText(score, 350, 220);
+
+    if (this.game.session.isNewHighScore) {
+      ctx.textAlign = 'center';
+      ctx.fillText('new best', 250, 260);
+    } else {
+      var best = pad(this.game.highScore, 4);
+
+      ctx.textAlign = 'left';
+      ctx.fillText('best', 150, 260);
+      ctx.textAlign = 'right';
+      ctx.fillText(best, 350, 260);
+    }
+
+    ctx.textAlign = 'center';
+    ctx.font = getFont('normal 32px');
     if (this.blinkOn) {
-      ctx.fillText('press R to restart', 250, 310);
+      ctx.fillText('press R to restart', 250, 330);
     }
   }
 

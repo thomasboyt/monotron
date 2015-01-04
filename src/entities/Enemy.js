@@ -70,7 +70,7 @@ class Enemy extends Entity {
 
     this.game.c.entities.destroy(this);
 
-    this.game.score += 1;
+    this.game.session.score += 1;
 
     this.maybeCreatePowerup();
   }

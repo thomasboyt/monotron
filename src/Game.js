@@ -22,6 +22,19 @@ type AssetMap = {
   };
 }
 
+/*
+ * Holds session-specific game state that should get cleared when you restart the game
+ */
+class Session {
+  score: number;
+  isNewHighScore: boolean;
+
+  constructor() {
+    this.score = 0;
+    this.isNewHighScore = false;
+  }
+}
+
 class Game {
   c: Coquette;
   assets: AssetMap;
@@ -32,7 +45,8 @@ class Game {
 
   player: Player;
   spawner: EnemySpawner;
-  score: number;
+
+  session: Session;
 
   constructor(assets: AssetMap, audioCtx: any) {
     this.assets = assets;
@@ -62,6 +76,9 @@ class Game {
       }
     });
 
+    var score = localStorage.getItem('monotronHighScore');
+    this.highScore = score !== null ? parseInt(score, 10) : 0;
+
     var ui = new UI(this, {});
 
     this.spawner = new EnemySpawner(this);
@@ -89,7 +106,7 @@ class Game {
   }
 
   start() {
-    this.score = 0;
+    this.session = new Session();
 
     this.player = new Player(this, {
       center: { x: this.width / 2, y: this.height / 2 }
@@ -112,6 +129,12 @@ class Game {
   die() {
     this.clearWorld();
     this.spawner.stop();
+
+    if (this.session.score > this.highScore) {
+      this.highScore = this.session.score;
+      this.session.isNewHighScore = true;
+      localStorage.setItem('monotronHighScore', this.session.score);
+    }
   }
 }
 
