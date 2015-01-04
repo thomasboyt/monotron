@@ -6,9 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node_modules/.bin/webpack-dev-server",
-    "ship": "node_modules/.bin/grunt deploy:all",
-    "flow-start": "flow start --lib interfaces/",
-    "typecheck": "flow check --lib interfaces/"
+    "ship": "node_modules/.bin/grunt deploy:all"
   },
   "author": "Thomas Boyt <me@thomasboyt.com>",
   "license": "MIT",
