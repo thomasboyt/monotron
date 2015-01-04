@@ -1,3 +1,5 @@
+/* @flow */
+
 type AudioMap = {
   [key:string]: any
 }
@@ -6,6 +8,7 @@ class AudioManager {
   ctx: any;
   audioMap: AudioMap;
   muted: boolean;
+  volumeNode: any;
 
   constructor() {
     this.ctx = new AudioContext();
