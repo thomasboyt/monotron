@@ -33,6 +33,10 @@ canvas#game-canvas {
   font-family: "Helvetica", "Arial," "sans-serif";
 }
 
+.itch-container {
+  text-align: center;
+}
+
 h2 {
   font-size: 18px;
   margin-bottom: 2px;
