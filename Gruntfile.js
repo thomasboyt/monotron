@@ -52,7 +52,7 @@ module.exports = function(grunt) {
       itch: {
         cwd: 'build/',
         src: ['build/**/*'],
-        dest: 'itch.zip'
+        dest: 'build/itch' + Date.now() + '.zip'
       }
     }
   });
