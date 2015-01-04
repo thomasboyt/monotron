@@ -44,6 +44,7 @@ class Game {
   audioManager: AudioManager;
   preloader: AssetPreloader;
   session: Session;
+  didShowInstructions: boolean;
 
   width: number;
   height: number;
@@ -85,7 +86,7 @@ class Game {
     this.highScore = score !== null ? parseInt(score, 10) : 0;
 
     this.preloader = new AssetPreloader(assets, this.audioManager.ctx);
-    new UI(this, {});
+    this.ui = new UI(this, {});
 
     this.preloader.load().done((assets) => {
       this.fsm.loaded(assets);
@@ -93,10 +94,10 @@ class Game {
   }
 
   loaded(evt: string, before: string, after: string, assets: AssetMap) {
-    console.log(arguments);
     this.assets = assets;
     this.audioManager.setAudioMap(assets.audio);
     this.spawner = new EnemySpawner(this);
+    this.didShowInstructions = false;
   }
 
   update(dt: number) {
@@ -123,11 +124,24 @@ class Game {
   start() {
     this.session = new Session();
 
+    var delay;
+
+    if (!this.didShowInstructions) {
+      this.didShowInstructions = true;
+      this.ui.showInstructions();
+      delay = this.config.startDelayMs;
+    } else {
+      delay = 0;
+    }
+
     this.player = new Player(this, {
       center: { x: this.width / 2, y: this.height / 2 }
     });
 
-    this.spawner.start();
+    setTimeout(() => {
+      this.spawner.start();
+    }, delay);
+
   }
 
   clearWorld() {

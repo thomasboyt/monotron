@@ -80,6 +80,7 @@ class Bullet extends Entity {
 
   draw(ctx: any) {
     ctx.fillStyle = 'white';
+
     ctx.fillRect(this.center.x - this.size.x / 2,
                  this.center.y - this.size.y / 2,
                  this.size.x,

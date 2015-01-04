@@ -23,7 +23,9 @@ var config = {
   // See EnemySpawner.getSpawnDelay()
   initialSpawnDelay: 1000,
   minSpawnDelay: 500,
-  timeToFinalSpawnDelayMs: 90 * 1000
+  timeToFinalSpawnDelayMs: 90 * 1000,
+
+  startDelayMs: 5000
 };
 
 module.exports = config;

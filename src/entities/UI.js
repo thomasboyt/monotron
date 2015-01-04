@@ -20,6 +20,7 @@ function pad(num, size) {
 class UI extends Entity {
   game: Game;
   blinkTimer: Timer;
+  instructionsTimer: Timer;
   blinkOn: boolean;
 
   init(game: Game, settings: any) {
@@ -29,6 +30,10 @@ class UI extends Entity {
 
     this.blinkTimer = new Timer(BLINK_TIMER_MS);
     this.blinkOn = true;
+  }
+
+  showInstructions() {
+    this.instructionsTimer = new Timer(this.game.config.startDelayMs);
   }
 
   update(dt: number) {
@@ -48,6 +53,19 @@ class UI extends Entity {
     // Bombs
     ctx.textAlign = 'left';
     ctx.fillText('Bombs:' + this.game.player.bombs, 50, 50);
+
+    this.drawInstructions(ctx);
+  }
+
+  drawInstructions(ctx: any) {
+    if (!this.instructionsTimer.expired()) {
+      ctx.textAlign = 'center';
+
+      var offset = 250;
+      ctx.fillText('WASD TO MOVE', 250, offset + 0);
+      ctx.fillText('IJKL TO SHOOT', 250, offset + 30);
+      ctx.fillText('SPACE FOR BOMB', 250, offset + 60);
+    }
   }
 
   drawDead(ctx: any) {

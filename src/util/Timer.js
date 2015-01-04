@@ -16,7 +16,7 @@ class Timer {
 
   expired(): boolean {
     if (this.expireIn === null) {
-      return false;
+      return true;
     } else {
       return this.elapsed() > this.expireIn;
     }
