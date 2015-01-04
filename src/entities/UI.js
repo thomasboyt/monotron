@@ -102,6 +102,28 @@ class UI extends Entity {
     ctx.fillRect(0, 0, this.game.width, this.game.height);
   }
 
+  drawLoading(ctx: any) {
+    ctx.fillStyle = 'white';
+    ctx.strokeStyle = 'white';
+
+    ctx.font = '24px Hyperspace';
+    ctx.textAlign = 'left';
+    ctx.fillText('loading...', 25, 300);
+
+    // progress bar
+    var width = 450;
+    var height = 20;
+
+    var numTotal = this.game.preloader.numTotal;
+    var numLoaded = this.game.preloader.numLoaded;
+
+    var fillPercent = numLoaded / numTotal;
+    var barWidth = width * fillPercent;
+
+    ctx.strokeRect(25, 320, width, height);
+    ctx.fillRect(25, 320, barWidth, height);
+  }
+
   draw(ctx: any) {
     this.drawBg(ctx);
 
@@ -115,6 +137,8 @@ class UI extends Entity {
       this.drawDead(ctx);
     } else if (fsm.is('attract')) {
       this.drawAttract(ctx);
+    } else if (fsm.is('loading')) {
+      this.drawLoading(ctx);
     }
 
   }

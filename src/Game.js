@@ -5,6 +5,9 @@ var EnemySpawner = require('./EnemySpawner');
 var AudioManager = require('./util/AudioManager');
 var addRegister = require('./util/addRegister');
 var StateMachine = require('javascript-state-machine');
+
+var AssetPreloader = require('./util/AssetPreloader');
+var assets = require('./assets');
 var config = require('./config');
 
 var Player = require('./entities/Player');
@@ -39,6 +42,7 @@ class Game {
   c: Coquette;
   assets: AssetMap;
   audioManager: AudioManager;
+  preloader: AssetPreloader;
   session: Session;
 
   width: number;
@@ -49,9 +53,8 @@ class Game {
 
   highScore: number;
 
-  constructor(assets: AssetMap, audioCtx: any) {
-    this.assets = assets;
-    this.audioManager = new AudioManager(audioCtx, this.assets.audio);
+  constructor() {
+    this.audioManager = new AudioManager();
 
     this.width = 500;
     this.height = 375;
@@ -64,14 +67,15 @@ class Game {
     addRegister(this.c);
 
     this.fsm = StateMachine.create({
-      initial: 'attract',
+      initial: 'loading',
       events: [
-        // { name: 'loaded', from: ['loading'], to: 'attract' },
+        { name: 'loaded', from: ['loading'], to: 'attract' },
         { name: 'start', from: ['attract', 'dead'], to: 'playing' },
         { name: 'die', from: 'playing', to: 'dead' }
       ],
 
       callbacks: {
+        onloaded: this.loaded.bind(this),
         onenterplaying: this.start.bind(this),
         ondie: this.die.bind(this)
       }
@@ -80,8 +84,18 @@ class Game {
     var score = localStorage.getItem('monotronHighScore');
     this.highScore = score !== null ? parseInt(score, 10) : 0;
 
-    var ui = new UI(this, {});
+    this.preloader = new AssetPreloader(assets, this.audioManager.ctx);
+    new UI(this, {});
 
+    this.preloader.load().done((assets) => {
+      this.fsm.loaded(assets);
+    });
+  }
+
+  loaded(evt: string, before: string, after: string, assets: AssetMap) {
+    console.log(arguments);
+    this.assets = assets;
+    this.audioManager.setAudioMap(assets.audio);
     this.spawner = new EnemySpawner(this);
   }
 

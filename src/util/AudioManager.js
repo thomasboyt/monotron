@@ -7,9 +7,8 @@ class AudioManager {
   audioMap: AudioMap;
   muted: boolean;
 
-  constructor(audioCtx: any, audioMap: AudioMap) {
-    this.ctx = audioCtx;
-    this.audioMap = audioMap;
+  constructor() {
+    this.ctx = new AudioContext();
 
     this.volumeNode = this.ctx.createGain();
     this.volumeNode.connect(this.ctx.destination);
@@ -17,6 +16,10 @@ class AudioManager {
     this.volumeNode.gain.value = 0.2;
 
     this.muted = false;
+  }
+
+  setAudioMap(audioMap: AudioMap) {
+    this.audioMap = audioMap;
   }
 
   play(name: string) {
