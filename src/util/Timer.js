@@ -15,10 +15,12 @@ class Timer {
   }
 
   expired(): boolean {
-    if (this.expireIn === null) {
+    var expireIn = this.expireIn;
+
+    if (expireIn == null) {
       return true;
     } else {
-      return this.elapsed() > this.expireIn;
+      return this.elapsed() > expireIn;
     }
   }
 
