@@ -18,7 +18,12 @@ var config = {
   powerupSpawnThrottleMs: 15000,
 
   // Probability that a powerup will spawn
-  powerupProbability: 0.1
+  powerupProbability: 0.1,
+
+  // See EnemySpawner.getSpawnDelay()
+  initialSpawnDelay: 1000,
+  minSpawnDelay: 500,
+  timeToFinalSpawnDelayMs: 60 * 1000
 };
 
 module.exports = config;

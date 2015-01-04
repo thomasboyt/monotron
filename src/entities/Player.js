@@ -25,7 +25,7 @@ class Player extends Entity {
   c: Coquette;
   game: Game;
   bombs: number;
-  shotThrottleTimer: timer;
+  shotThrottleTimer: Timer;
 
   init(game: Game, settings: Options) {
     this.c = game.c;

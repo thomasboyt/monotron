@@ -2,6 +2,7 @@
 
 var Game = require('./Game');
 var Enemy = require('./entities/Enemy');
+var Timer = require('./util/Timer');
 var math = require('./util/math');
 
 type Coordinates = {
@@ -14,6 +15,7 @@ var max = (a, b) => a > b ? a : b;
 class EnemySpawner {
   _curTimeoutId: number;
   _numSpawned: number;
+  timer: Timer;
 
   constructor(game: Game) {
     this.game = game;
@@ -21,6 +23,7 @@ class EnemySpawner {
   }
 
   start() {
+    this.timer = new Timer();
     this._spawnLoop();
   }
 
@@ -45,9 +48,19 @@ class EnemySpawner {
   }
 
   getSpawnDelay(): number {
-    // TODO: make this a curve of some sort based on numSpawned so far
+    // The difficulty curve is defined by a few points:
+    // 1. The starting spawn delay
+    // 2. The final spawn delay
+    // 3. The time it takes to drop from the starting delay to the final delay
 
-    return 1000;
+    var elapsed = this.timer.elapsed();
+    var amntToDrop = this.game.config.initialSpawnDelay - this.game.config.minSpawnDelay;
+    var amntDropped = elapsed * (amntToDrop / this.game.config.timeToFinalSpawnDelayMs);
+    var delay = this.game.config.initialSpawnDelay - amntDropped;
+
+    delay = max(delay, this.game.config.minSpawnDelay);
+
+    return delay;
   }
 
   _getNextCoordinates(): Coordinates {

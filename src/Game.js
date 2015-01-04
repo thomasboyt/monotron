@@ -39,6 +39,7 @@ class Game {
   c: Coquette;
   assets: AssetMap;
   audioManager: AudioManager;
+  session: Session;
 
   width: number;
   height: number;
@@ -46,7 +47,7 @@ class Game {
   player: Player;
   spawner: EnemySpawner;
 
-  session: Session;
+  highScore: number;
 
   constructor(assets: AssetMap, audioCtx: any) {
     this.assets = assets;
@@ -133,7 +134,7 @@ class Game {
     if (this.session.score > this.highScore) {
       this.highScore = this.session.score;
       this.session.isNewHighScore = true;
-      localStorage.setItem('monotronHighScore', this.session.score);
+      localStorage.setItem('monotronHighScore', ''+this.session.score);
     }
   }
 }

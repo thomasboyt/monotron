@@ -1,19 +1,32 @@
 /* @flow */
 
 class Timer {
-  expireIn: number;
+  expireIn: ?number;
   _startTime: number;
 
-  constructor(expireIn: number) {
-    this.expireIn = expireIn;
+  constructor(expireIn?: number) {
+    if (expireIn === undefined) {
+      this.expireIn = null;
+    } else {
+      this.expireIn = expireIn;
+    }
+
     this.reset();
   }
 
-  expired() {
-    return Date.now() - this._startTime > this.expireIn;
+  expired(): boolean {
+    if (this.expireIn === null) {
+      return false;
+    } else {
+      return this.elapsed() > this.expireIn;
+    }
   }
 
-  reset() {
+  elapsed(): number {
+    return Date.now() - this._startTime;
+  }
+
+  reset(): void {
     this._startTime = Date.now();
   }
 }
