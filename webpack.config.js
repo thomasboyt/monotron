@@ -3,12 +3,13 @@ var webpack = require('webpack');
 module.exports = {
   entry: {
     app: './src/main.js',
+    page: './src/page.js',
     vendor: ['coquette', 'q', 'lodash', 'javascript-state-machine', './src/vendor/glfx']
   },
 
   output: {
     path: 'build/',
-    filename: "bundle.js"
+    filename: "[name].bundle.js"
   },
 
   resolve: {
@@ -37,7 +38,7 @@ module.exports = {
         test: /\.png$/,
         loader: 'file-loader',
         query: {
-          name: '/assets/[hash].[ext]'
+          name: 'assets/[hash].[ext]'
         }
       },
 
@@ -50,7 +51,7 @@ module.exports = {
         test: /(?:\.woff$|\.ttf$|\.svg$|\.eot$)/,
         loader: 'file-loader',
         query: {
-          name: '/assets/[hash].[ext]'
+          name: 'assets/[hash].[ext]'
         }
       },
 
@@ -58,7 +59,7 @@ module.exports = {
         test: /(?:\.wav$)/,
         loader: 'file-loader',
         query: {
-          name: '/assets/[hash].[ext]'
+          name: 'assets/[hash].[ext]'
         }
       }
     ]

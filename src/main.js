@@ -9,10 +9,6 @@ installGlfxRenderer();
 
 var Game = require('./Game');
 
-function init() {
-  require('./page');
-
+window.onload = () => {
   new Game();
-}
-
-window.onload = init;
+};
