@@ -1,9 +1,12 @@
 /* @flow */
 
+var screenfull = require('screenfull');
+
 var Coquette = require('coquette');
 var EnemySpawner = require('./EnemySpawner');
 var AudioManager = require('./util/AudioManager');
 var addRegister = require('./util/addRegister');
+var setupFullscreen = require('./fullscreen');
 var StateMachine = require('javascript-state-machine');
 
 var AssetPreloader = require('./util/AssetPreloader');
@@ -65,6 +68,8 @@ class Game {
     this.c = window.__coquette__ = new Coquette(this, 'game-canvas', this.width, this.height, 'black');
     this.c.renderer.getCtx().imageSmoothingEnabled = false;
     this.c.renderer.initGlfx();
+
+    setupFullscreen();
     addRegister(this.c);
 
     this.fsm = StateMachine.create({
